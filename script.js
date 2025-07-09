@@ -33,29 +33,49 @@ const contacts = [
 const ul = document.querySelector("ul");
 
 
+
 ul.innerHTML = "";
 contacts.forEach(function(contact) {
-    const fullName = contact.name;
+    ul.appendChild(createLi(contact.name));
+})
+
+function createLi(fullName) {
     const firstName = fullName.split(" ")[0];
     const lastName = fullName.split(" ")[1];
     const avatar = firstName.charAt(0) + lastName.charAt(0);
-    const html = `
-        <li>
-            <div class="discussion">
-                <div class="avatar">${avatar}</div>
-                <div class="contact">
-                    <div class="name">${fullName}</div>
-                    <div class="message">Hey, how are you?</div>
-                </div>
-            </div>
-            <div class="meta">
-                <div class="time">12:00</div>
-                <div class="status">
-                    1
-                </div>
-            </div>
-        </li>
-    `;
+    const li = document.createElement("li"); // <li></li>
+    const divDiscussion = document.createElement("div"); // <div></div>
+    divDiscussion.classList.add("discussion"); // <div class="discussion"></div>
+    // divDiscussion.className = "discussion"; // <div class="discussion"></div>
+    li.appendChild(divDiscussion); // <li><div class="discussion"></div></li>
+    const divAvatar = document.createElement("div"); // <div></div>
+    divAvatar.classList.add("avatar"); // <div class="avatar"></div>
+    divAvatar.textContent = avatar; // <div class="avatar">AB</div>
+    divDiscussion.appendChild(divAvatar); // <li><div class="discussion"><div class="avatar">AB</div></div></li>
+    const divContact = document.createElement("div"); // <div></div>
+    divContact.classList.add("contact"); // <div class="contact"></div>
+    divDiscussion.appendChild(divContact);
+
+    const divName = document.createElement("div"); 
+    divName.classList.add("name");
+    divName.textContent = fullName;
+    const divMessage = document.createElement("div");
+    divMessage.classList.add("message");
+    divMessage.textContent = 'Hey, how are you?';
+    // divContact.appendChild(divName);
+    // divContact.appendChild(divMessage);
+    divContact.append(divName, divMessage);
     //
-    ul.innerHTML += html;
-})
+    const divMeta = document.createElement("div");
+    divMeta.classList.add("meta");
+    li.appendChild(divMeta);
+    const divTime = document.createElement("div");
+    divTime.classList.add("time");
+    divTime.textContent = '12:00';
+    divMeta.appendChild(divTime);
+    const divStatus = document.createElement("div");
+    divStatus.classList.add("status");
+    divStatus.textContent = '1';
+    divMeta.appendChild(divStatus);
+    return li;
+}
